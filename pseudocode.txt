@@ -1,0 +1,109 @@
+1.__init__
+This one sets up the Q-Learning Table
+Initializes a dictionary (a table) to store Q-values for every possible (state, action) pair
+It also sets up the learning rate (alpha), exploration rate (epsilon), and discount factor (gamma)—which control how the agent learns over time
+
+Function __init__(self, **args):
+    - Call parent class constructor (ReinforcementAgent) with given arguments.
+    - Initialize an empty dictionary (Counter) to store Q-values.
+
+2.getQValue 
+
+It retrieves Q-value for a state-action pair
+The agent looks at the current state (position in the grid) and action (moving up, down, left, or right).
+
+If the agent has already taken this action in this state before, it returns the Q-value (how good this move is).
+
+If the agent has never been in this situation before, it returns 0.0 because there’s no experience yet.
+
+Function getQValue(self, state, action):
+    - If (state, action) exists in Q-values dictionary:
+        - Return the stored Q-value.
+    - Else:
+        - Return 0.0 (default Q-value for unseen states).
+
+
+3.computeValueFromQValues(state)
+This finds the best possible score for a state
+The agent looks at all possible actions from its current state.
+
+If there are no actions (like when it reaches a terminal state), return 0.0.
+
+Otherwise, the agent finds the highest Q-value among all possible moves.
+
+Function computeValueFromQValues(self, state):
+    - Get all possible legal actions for the state.
+    - If there are no legal actions:
+        - Return 0.0 (no possible moves).
+    - Else:
+        - Find the maximum Q-value among all actions.
+        - Return the highest Q-value.
+
+
+4. computeActionFromQValues(state)
+This finds the best move for the state
+The agent now picks the actual best move instead of just the best score.
+
+First, check the legal moves (can’t move into walls).
+
+If there are no moves available, return None (game over or terminal state).
+
+Otherwise, find the action that gives the highest Q-value.
+
+If multiple actions have the same score, pick one randomly.
+
+Function computeActionFromQValues(self, state):
+    - Get all possible legal actions for the state.
+    - If there are no legal actions:
+        - Return None (no possible move).
+    - Else:
+        - Find the action(s) with the highest Q-value.
+        - If multiple actions have the same Q-value:
+            - Choose one randomly.
+        - Return the selected action.
+
+
+5.getAction(state)
+get all possible moves.
+
+If there are no moves, return None.
+
+Flip a coin:
+
+With probability epsilon (exploration rate): Pick a random action (try something new).
+
+Otherwise: Pick the best known action (use past experience).
+
+Function getAction(self, state):
+    - Get all possible legal actions for the state.
+    - If no legal actions:
+        - Return None.
+    - Else:
+        - With probability epsilon (exploration rate):
+            - Choose a random action from legal actions.
+        - Otherwise:
+            - Choose the best action using computeActionFromQValues.
+    - Return the chosen action.
+
+
+6.update(state, action, nextState, reward) (Learn from Mistakes and Wins)
+This is where the agent actually learns by updating its knowledge.
+
+After taking an action, the agent gets a reward (positive or negative).
+
+alpha (α): Learning rate (how much new experience matters).
+
+gamma (γ): Discount factor (how much future rewards matter).
+
+R: Reward received.
+
+max Q(s', a'): Best future reward.
+
+Over time, the agent gets better at finding the best path through GridWorld.
+
+Function update(self, state, action, nextState, reward):
+    - Compute the sample value:
+        - Sample = reward + (discount factor * max Q-value of nextState)
+    - Update Q-value for (state, action) using:
+        - New Q-value = (1 - learning rate) * Old Q-value + (learning rate * Sample)
+    - Store the updated Q-value in the Q-values dictionary.
