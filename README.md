@@ -29,6 +29,7 @@ The Q-learning agent (`QLearningAgent` class in `qlearningAgents.py`) implements
 4. `computeActionFromQValues`: Determines best action in a state
 5. `getAction`: Implements epsilon-greedy action selection
 6. `update`: Updates Q-values using the Q-learning formula
+7. `pseudo-code` : Contains the pseudo-code for the code
 
 ## Demo Results
 
